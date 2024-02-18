@@ -1,0 +1,94 @@
+
+```javascript
+function Body() {
+```
+This line defines a function named `Body`. It seems like this function might be a React component.
+
+```javascript
+    const [resData, setResData] = useState([]);
+```
+Here, the `useState` hook is being used to define a state variable named `resData` and its corresponding setter function `setResData`. The initial value of `resData` is an empty array `[]`.
+
+```javascript
+    async function fetchData() {
+```
+This line declares an asynchronous function named `fetchData`. This function will be used to make an asynchronous API call to retrieve data.
+
+```javascript
+        const response = await fetch('https://www.swiggy.com/dapi/restaurants/list/v5?lat=31.4684649&lng=76.2708152&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING');
+```
+Here, the `fetch` function is used to make an HTTP GET request to the provided URL. This URL seems to be an endpoint for retrieving a list of restaurants. The `await` keyword is used to wait for the response to be fetched before proceeding. The response is stored in the `response` variable.
+
+```javascript
+        const data = await response.json();
+```
+This line uses the `json()` method on the `response` object to parse the response body as JSON. The parsed JSON data is stored in the `data` variable.
+
+```javascript
+        let resList = data.data.cards[2].card.card.gridElements.infoWithStyle.restaurants;
+```
+This line extracts the list of restaurants from the parsed JSON data. It seems to access nested properties in the JSON structure to retrieve the list of restaurants. The extracted list is stored in the `resList` variable.
+
+```javascript
+        console.log(resList);
+```
+This line logs the `resList` to the console. It's a way to verify the data you've extracted from the API response.
+
+```javascript
+        setResData(resList);
+```
+This line calls the `setResData` function to update the `resData` state variable with the extracted list of restaurants. This will trigger a re-render of the component with the updated state.
+
+```javascript
+    }
+```
+
+```javascript
+    useEffect(() => {
+        fetchData();
+    }, []);
+```
+Here, the `useEffect` hook is used. It's a built-in React hook that is used for side effects in functional components. In this case, it's used to call the `fetchData` function when the component is mounted (`[]` as the second argument means the effect will only run once, similar to the behavior of `componentDidMount` in class components). This will initiate the API call to fetch restaurant data when the component is first rendered.
+
+To summarize, this code defines a React component named `Body` that fetches a list of restaurants from a specific URL using the Fetch API and sets the fetched data in the component's state using the `useState` hook. The `useEffect` hook is used to trigger the API call when the component is mounted.
+
+Certainly! Let's break down the code line by line:
+
+```jsx
+<div className="card_padding">
+```
+This JSX code represents a `<div>` element with the class name `"card_padding"`. It's a common practice to use CSS classes for styling elements.
+
+```jsx
+<div className="card_ul">
+```
+Another `<div>` element is created with the class name `"card_ul"`.
+
+```jsx
+{
+    resData.map((restaurantData, i) => {
+```
+This is the start of a JavaScript expression within curly braces `{}`. It uses the `map` function to iterate over each element in the `resData` array. For each `restaurantData` object and its corresponding index `i`, the following code block will be executed.
+
+```jsx
+        return (
+            <Link key={i} to={`/menu/${restaurantData.info.id}`}>
+                <Restaurent{...restaurantData.info} />
+            </Link>
+        );
+```
+Here's what's happening within the `map` callback function:
+
+1. `<Link>` component from React Router is used to create a hyperlink. The `key` prop is set to the index `i` to provide a unique identifier for each rendered link.
+
+2. The `to` prop of the `<Link>` specifies the target URL, which seems to be a dynamic URL created using template literals. It includes the string "/menu/" followed by the `id` property of the `restaurantData.info` object. This suggests that clicking on the link will navigate to a route related to the restaurant's menu.
+
+3. `<Restaurent{...restaurantData.info} />` is rendered within the link. It seems there might be a typo, and it should be `<Restaurant {...restaurantData.info} />` if `Restaurant` is a React component. The `...restaurantData.info` syntax is used to spread the properties of `restaurantData.info` as individual props to the `Restaurant` component.
+
+```jsx
+    })
+}
+```
+This closing curly brace ends the `map` callback function.
+
+To summarize, the provided code renders a list of elements based on the `resData` array using the `map` function. For each element in the array, it creates a `<Link>` component with a dynamic URL and renders a `Restaurant` component with properties from the `restaurantData.info` object. This code is used to generate a list of restaurant links that likely lead to their respective menu pages.
